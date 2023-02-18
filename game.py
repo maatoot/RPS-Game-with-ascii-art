@@ -1,75 +1,72 @@
 import random
-#  ascii art by : wynand1004/RPS_ASCII_Art.py
-scissors ="""
-     SCISSORS 
----'   ____)____
-          ______)
-       __________)
-      (____)
----.__(___)"""
 
+# Define the game images as a dictionary
+game_images = {
+    "rock": """
+        ROCK
+        _______
+    ---'   ____)
+          (_____)
+          (_____)
+          (____)
+    ---.__(___)
+    """,
+    "paper": """
+        PAPER
+        _______
+    ---'   ____)____
+              ______)
+              _______)
+             _______)
+    ---.__________)
+    """,
+    "scissors": """
+        SCISSORS
+        ---'   ____)____
+              ______)
+           __________)
+          (____)
+        ---.__(___)
+    """
+}
 
-paper ="""
-    PAPER
-    _______
----'   ____)____
-          ______)
-          _______)
-         _______)
----.__________)
-"""
-
-rock = """
-    ROCK
-    _______
----'   ____)
-      (_____)
-      (_____)
-      (____)
----.__(___)
-"""
-game_images = [rock, paper, scissors]
-comp_opts = ("rock","paper","scissors")
-comp_choice = random.choice(comp_opts)
-user_choice = input("Rock , Paper , Scissors ??\n").lower().split(" ")[0]
-
-def the_images(comp_choice,user_choice):
-    if comp_choice ==  "rock":
-      print (f"The super smart computer choice is: \n{game_images[0]}")
-    elif comp_choice == "paper":
-      print (f"The super smart computer choice is: \n{game_images[1]}")
-    elif comp_choice == "scissors":
-      print (f"The super smart computer choice is: \n{game_images[2]}")
+def get_user_choice():
     
-    if user_choice ==  "rock":
-      print (f"Your choice is : \n{game_images[0]}")
-    elif user_choice == "paper":
-      print (f"Your choice is : \n{game_images[1]}")
-    elif user_choice == "scissors":
-      print (f"Your choice is : \n{game_images[2]}")
-def the_game(comp_choice,user_choice):
-  if (user_choice == "rock" and comp_choice == "rock") or (user_choice == "paper"  and comp_choice == "paper") or (user_choice == "scissors"  and comp_choice == "scissors"):
-    print(the_images(comp_choice,user_choice))
-    print (" DRAW ")
-  else:
-    print(the_images(comp_choice,user_choice))
-    if user_choice ==  "rock" and comp_choice == "paper":
-      return "YOU LOST THE GAME , PLAY AGAIN ? "
-    elif user_choice == "scissors" and comp_choice == "rock":
-      return  "YOU LOST THE GAME , PLAY AGAIN ? "
-    elif user_choice == "paper" and comp_choice == "scissors":
-     return  "YOU LOST THE GAME , PLAY AGAIN ? "
+    #Get the user choice and vaildate it 
+    user_choice = ""
+    while user_choice not in game_images.keys():
+        user_choice = input("Rock, paper, or scissors? ").lower().strip()
+        if user_choice not in game_images.keys():
+            print("Invalid choice. Please choose rock, paper, or scissors.")
+    return user_choice
+
+def play_game(comp_choice, user_choice):
+    # Determine the winner of the game 
+
+    if comp_choice == user_choice:
+        print("It's a tie!")
+    elif (comp_choice == "rock" and user_choice == "scissors") or (comp_choice == "paper" and user_choice == "rock") or (comp_choice == "scissors" and user_choice == "paper"):
+        print("You lose!")
     else:
-      return  "YOU WON THE GAME , PLAY AGAIN ? "
+        print("You win!")
 
+    # print the computer's and user's choices
+    print("Computer's choice:")
+    print(game_images[comp_choice])
+    print("Your choice:")
+    print(game_images[user_choice])
 
+# Main game loop
+while True:
+    # get the computer's choice randomly 
+    comp_choice = random.choice(list(game_images.keys()))
 
-if user_choice == "rock" or user_choice == "paper" or user_choice == "scissors":
-  print(the_game(comp_choice,user_choice))
-else:
-  print("You have entered an incorrect value !! , please make sure that your spelling is correct .")
-  user_choice = input("Rock , Paper , Scissors ??\n").lower()
-  try:
-    print(the_game(comp_choice,user_choice))
-  except:
-    print("Unknown error happend please restart the game")
+    # Get the user's choice by the get_user_choice() function in line 33
+    user_choice = get_user_choice()
+
+    play_game(comp_choice, user_choice)
+
+    # if the user says anything that isn't y the loop breaks and the program will be ended .
+    play_again = input("Do you want to play again?? (y/n) ").lower().strip()
+    if play_again != "y":
+        break
